@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Task Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    
+    #task-form {
+      margin-bottom: 20px;
+    }
+    
+    #task-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    .task-item {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Task Manager</h1>
+  
+  <form id="task-form">
+    <input type="text" id="task-name" placeholder="Task Name" required>
+    <input type="datetime-local" id="task-datetime" required>
+    <button type="submit">Add Task</button>
+  </form>
+  
+  <ul id="task-list"></ul>
+  
+  <script>
+    // Retrieve task form and task list elements
+    const taskForm = document.getElementById('task-form');
+    const taskList = document.getElementById('task-list');
+    
+    // Add event listener to the task form
+    taskForm.addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission
+      
+      // Get task name and datetime values from the form
+      const taskNameInput = document.getElementById('task-name');
+      const taskDatetimeInput = document.getElementById('task-datetime');
+      const taskName = taskNameInput.value;
+      const taskDatetime = taskDatetimeInput.value;
+      
+      // Create a new task item element
+      const taskItem = document.createElement('li');
+      taskItem.classList.add('task-item');
+      
+      // Create task name and datetime display elements
+      const taskNameDisplay = document.createElement('span');
+      taskNameDisplay.textContent = taskName;
+      
+      const taskDatetimeDisplay = document.createElement('span');
+      taskDatetimeDisplay.textContent = taskDatetime;
+      
+      // Append name and datetime to the task item
+      taskItem.appendChild(taskNameDisplay);
+      taskItem.appendChild(document.createTextNode(' - '));
+      taskItem.appendChild(taskDatetimeDisplay);
+      
+      // Append the task item to the task list
+      taskList.appendChild(taskItem);
+      
+      // Calculate the time difference between the task's due datetime and the current datetime
+      const now = new Date();
+      const dueDatetime = new Date(taskDatetime);
+      const timeDifference = dueDatetime - now;
+      
+      // Schedule the reminder using setTimeout
+      setTimeout(function() {
+        alert('Reminder: ' + taskName);
+      }, timeDifference);
+      
+      // Reset the form inputs
+      taskNameInput.value = '';
+      taskDatetimeInput.value = '';
+    });
+  </script>
+</body>
+</html>
